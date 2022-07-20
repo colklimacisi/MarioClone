@@ -9,6 +9,7 @@ public class CameraFollow : MonoBehaviour
     public Transform rightBounds;
     private float camWidth, camHeight, levelMinX, levelMaxX;
     public float smoothDampTime = 0.15f;
+    private Vector3 smoothDampVelocity = Vector3.zero;
         // Start is called before the first frame update
     void Start()
     {
@@ -27,7 +28,8 @@ public class CameraFollow : MonoBehaviour
     void Update()
     {
         if (target) { float targetx = Mathf.Max(levelMinX, Mathf.Min(levelMaxX, target.position.x));
-        float x= Mathf.SmoothDamp()
+            float x = Mathf.SmoothDamp(transform.position.x, targetx, ref smoothDampVelocity.x, smoothDampTime);
+            transform.position = new Vector3(x, transform.position.y, transform.position.z);
         }
         
     }
