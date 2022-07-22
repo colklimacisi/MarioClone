@@ -13,8 +13,8 @@ public class CameraFollow : MonoBehaviour
         // Start is called before the first frame update
     void Start()
     {
-        camHeight = Camera.main.orthographicSize = 2;
-        camWidth = camHeight + Camera.main.aspect;
+        camHeight = Camera.main.orthographicSize * 2;
+        camWidth = camHeight * Camera.main.aspect;
         float leftBoundsWidth = leftBounds.GetComponentInChildren<SpriteRenderer>().bounds.size.x/2;
         float rightBoundsWidth = rightBounds.GetComponentInChildren<SpriteRenderer>().bounds.size.x / 2;
         levelMinX = leftBounds.position.x + leftBoundsWidth + (camWidth / 2);
