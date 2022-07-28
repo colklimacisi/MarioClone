@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class Player : MonoBehaviour
-{
+{   public LayerMask wallMask;
     public Vector2 velocity;
     private bool walk, walkLeft, walkRight, jump;
     // Start is called before the first frame update
@@ -34,11 +34,14 @@ public class Player : MonoBehaviour
             if (walkRight)
             {
             pos.x += velocity.x* Time.deltaTime;
-            scale.x = 1;         
+            scale.x = 1;       
             }
-            transform.localPosition = pos;
-            transform.localScale = scale;
+            pos = CheckWallRays(pos, scale.x);
+
         }
+        transform.localPosition = pos;
+        transform.localScale = scale;
+
     }
 
     void CheckPlayerInput()
@@ -51,4 +54,20 @@ public class Player : MonoBehaviour
         walkRight = !inputLeft && inputRight;
         jump = inputSpace;
     }
+    Vector3 CheckWallRays(Vector3 pos, float direction)
+    {
+        Vector2 originTop = new Vector2(pos.x + direction * .4f, pos.y + 1f - 0.2f);
+        Vector2 originMiddle = new Vector2(pos.x + direction * .4f, pos.y );
+        Vector2 originBottom = new Vector2(pos.x + direction * .4f, pos.y - 1f + 0.2f);
+        RaycastHit2D wallTop = Physics2D.Raycast(originTop, new Vector2(direction, 0), velocity.x * Time.deltaTime, wallMask);  
+        RaycastHit2D wallMiddle = Physics2D.Raycast(originMiddle, new Vector2(direction, 0), velocity.x * Time.deltaTime, wallMask);
+        RaycastHit2D wallBottom = Physics2D.Raycast(originBottom, new Vector2(direction, 0), velocity.x * Time.deltaTime, wallMask);
+
+        if (wallTop.collider != null || wallMiddle.collider!=null || wallBottom.collider!= null)
+        {
+            pos.x -= velocity.x * Time.deltaTime * direction;
+        }
+        return pos;
+    }
+
 }
