@@ -3,9 +3,19 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class Player : MonoBehaviour
-{   public LayerMask wallMask;
+{
+    public float jumpVelocity;
+    public LayerMask wallMask;
+    public float gravity;
+    public LayerMask floorMask;
     public Vector2 velocity;
     private bool walk, walkLeft, walkRight, jump;
+    public enum PlayerState
+    {
+        jumping,idle,walking
+    }
+    private PlayerState playerState = PlayerState.idle;
+    private bool grounded = false;
     // Start is called before the first frame update
     void Start()
     {
@@ -39,11 +49,63 @@ public class Player : MonoBehaviour
             pos = CheckWallRays(pos, scale.x);
 
         }
+        if (jump && playerState != PlayerState.jumping) 
+        {
+            playerState = PlayerState.jumping;
+            velocity = new Vector2(velocity.x, jumpVelocity);
+
+        }
+        if (playerState == PlayerState.jumping)
+        {
+            pos.y += velocity.y * Time.deltaTime;
+            velocity.y -= gravity * Time.deltaTime;
+        }
+        if(velocity.y <= 0)
+        {
+            pos = CheckFloorRays(pos);
+        }
         transform.localPosition = pos;
         transform.localScale = scale;
 
     }
-
+    Vector3 CheckFloorRays(Vector3 pos)
+    {
+        Vector2 originLeft = new Vector2(pos.x - 0.5f + 0.2f, pos.y - 1f);
+        Vector2 originMiddle = new Vector2(pos.x , pos.y - 1f);
+        Vector2 originRight = new Vector2(pos.x - 0.5f + 0.2f, pos.y - 1f);
+        RaycastHit2D floorLeft = Physics2D.Raycast(originLeft, Vector2.down, velocity.x * Time.deltaTime, wallMask);
+        RaycastHit2D floorMiddle = Physics2D.Raycast(originMiddle, Vector2.down, velocity.x * Time.deltaTime, wallMask);
+        RaycastHit2D floorRight = Physics2D.Raycast(originRight, Vector2.down, velocity.x * Time.deltaTime, wallMask);
+        if (floorLeft.collider != null || floorMiddle.collider != null || floorRight.collider != null)
+        {
+            RaycastHit2D hitRay = floorRight;
+            if (floorLeft)
+            {
+                hitRay = floorLeft;
+            }
+            else if (floorMiddle)
+            {
+                hitRay = floorMiddle;
+            }
+            else if(floorRight) 
+            {
+                hitRay = floorRight;
+            }
+            playerState = PlayerState.idle;
+            grounded = true;
+            velocity.y = 0;
+            pos.y = hitRay.collider.bounds.center.y + hitRay.collider.bounds.size.y / 2 + 1;
+            
+        }
+        else
+        {
+            if(playerState!= PlayerState.jumping)
+            {
+                fall();
+            }
+        }
+        return pos;
+    }
     void CheckPlayerInput()
     {
         bool inputLeft = Input.GetKey(KeyCode.LeftArrow);
@@ -69,5 +131,11 @@ public class Player : MonoBehaviour
         }
         return pos;
     }
+    void fall() 
+    {
+        velocity.y = 0;
 
+        playerState = PlayerState.jumping;
+        grounded = false;
+    }
 }
