@@ -27,6 +27,7 @@ public class Player : MonoBehaviour
     {
         CheckPlayerInput();
         UpdatePlayerPosition();
+        UpdateAnimationStates();
     }
     void UpdatePlayerPosition()
     {
@@ -64,6 +65,10 @@ public class Player : MonoBehaviour
         {
             pos = CheckFloorRays(pos);
         }
+        if(velocity.y >=0)
+        {
+            pos = CheckCellingRays(pos);
+        }
         transform.localPosition = pos;
         transform.localScale = scale;
 
@@ -72,10 +77,10 @@ public class Player : MonoBehaviour
     {
         Vector2 originLeft = new Vector2(pos.x - 0.5f + 0.2f, pos.y - 1f);
         Vector2 originMiddle = new Vector2(pos.x , pos.y - 1f);
-        Vector2 originRight = new Vector2(pos.x - 0.5f + 0.2f, pos.y - 1f);
-        RaycastHit2D floorLeft = Physics2D.Raycast(originLeft, Vector2.down, velocity.x * Time.deltaTime, wallMask);
-        RaycastHit2D floorMiddle = Physics2D.Raycast(originMiddle, Vector2.down, velocity.x * Time.deltaTime, wallMask);
-        RaycastHit2D floorRight = Physics2D.Raycast(originRight, Vector2.down, velocity.x * Time.deltaTime, wallMask);
+        Vector2 originRight = new Vector2(pos.x + 0.5f - 0.2f, pos.y - 1f);
+        RaycastHit2D floorLeft = Physics2D.Raycast(originLeft, Vector2.down, velocity.x * Time.deltaTime, floorMask);
+        RaycastHit2D floorMiddle = Physics2D.Raycast(originMiddle, Vector2.down, velocity.x * Time.deltaTime, floorMask);
+        RaycastHit2D floorRight = Physics2D.Raycast(originRight, Vector2.down, velocity.x * Time.deltaTime, floorMask);
         if (floorLeft.collider != null || floorMiddle.collider != null || floorRight.collider != null)
         {
             RaycastHit2D hitRay = floorRight;
@@ -116,6 +121,52 @@ public class Player : MonoBehaviour
         walkRight = !inputLeft && inputRight;
         jump = inputSpace;
     }
+    void UpdateAnimationStates()
+    {
+        if(grounded && !walk)
+        {
+            GetComponent<Animator>().SetBool("isJumping", false);
+            GetComponent<Animator>().SetBool("isRunning", false);
+        }
+        if (grounded && walk)
+        {
+            GetComponent<Animator>().SetBool("isJumping", false);
+            GetComponent<Animator>().SetBool("isRunning", true);
+        }
+        if (playerState==PlayerState.jumping)
+        {
+            GetComponent<Animator>().SetBool("isJumping", true);
+            GetComponent<Animator>().SetBool("isRunning", false);
+        }
+    }
+    Vector3 CheckCellingRays(Vector3 pos)
+    {
+        Vector2 originLeft = new Vector2(pos.x - 0.5f + 0.2f, pos.y + 1f);
+        Vector2 originMiddle = new Vector2(pos.x, pos.y + 1f);
+        Vector2 originRight = new Vector2(pos.x + 0.5f -0.2f, pos.y + 1f);
+        RaycastHit2D ceilLeft = Physics2D.Raycast(originLeft, Vector2.up, velocity.x * Time.deltaTime, floorMask);
+        RaycastHit2D ceilMiddle = Physics2D.Raycast(originMiddle, Vector2.up, velocity.x * Time.deltaTime, floorMask);
+        RaycastHit2D ceilRight = Physics2D.Raycast(originRight, Vector2.up, velocity.x * Time.deltaTime, floorMask);
+        if(ceilLeft.collider != null || ceilMiddle.collider != null || ceilRight.collider != null )
+        {
+            RaycastHit2D hitRay = ceilLeft;
+            if (ceilLeft)
+            {
+                hitRay = ceilLeft;
+            }
+            else if(ceilMiddle)
+            {
+                hitRay = ceilMiddle;
+            }
+            else
+            {
+                hitRay = ceilRight;
+            }
+            pos.y = hitRay.collider.bounds.center.y - hitRay.collider.bounds.size.y / 2 - 1;
+            fall();
+        }
+        return pos;
+                }
     Vector3 CheckWallRays(Vector3 pos, float direction)
     {
         Vector2 originTop = new Vector2(pos.x + direction * .4f, pos.y + 1f - 0.2f);
