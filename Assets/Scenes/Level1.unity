@@ -654,7 +654,10 @@ MonoBehaviour:
   grounded: 1
   floorMask:
     serializedVersion: 2
-    m_Bits: 0
+    m_Bits: 9
+  wallMask:
+    serializedVersion: 2
+    m_Bits: 9
 --- !u!1001 &1407886677
 PrefabInstance:
   m_ObjectHideFlags: 0
