@@ -631,6 +631,30 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 0114cdacba174488c92aa1edf31baed1, type: 3}
+--- !u!1 &1189176667 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 124218, guid: 4ba430f162f394ec89163bcf70a24ee8, type: 3}
+  m_PrefabInstance: {fileID: 442950825}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &1189176668
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1189176667}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 15f495f7f8fd1264a821091018cbd760, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  gravity: 65
+  isWalkingLeft: 1
+  velocity: {x: 2, y: 0}
+  grounded: 1
+  floorMask:
+    serializedVersion: 2
+    m_Bits: 0
 --- !u!1001 &1407886677
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -1090,7 +1114,7 @@ MonoBehaviour:
   gravity: 65
   floorMask:
     serializedVersion: 2
-    m_Bits: 0
+    m_Bits: 1
   velocity: {x: 7, y: 0}
 --- !u!4 &1879984989 stripped
 Transform:

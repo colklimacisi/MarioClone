@@ -9,6 +9,7 @@ public class EnemyAI : MonoBehaviour
     public Vector2 velocity;
     public bool grounded=true;
     public LayerMask floorMask;
+    public LayerMask wallMask;
     private enum EnemyState
     {
         walking,falling,dead
@@ -80,6 +81,10 @@ public class EnemyAI : MonoBehaviour
             else if (groundRight)
             {
                 hitRay = groundRight;
+            }
+            if (hitRay.collider.tag == "Player")
+            {
+                Application.LoadLevel("GameOver");
             }
             pos.y = hitRay.collider.bounds.center.y + hitRay.collider.bounds.size.y / 2 + 0.5f;
             grounded = true;
