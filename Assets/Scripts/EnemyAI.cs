@@ -10,6 +10,9 @@ public class EnemyAI : MonoBehaviour
     public bool grounded=true;
     public LayerMask floorMask;
     public LayerMask wallMask;
+    private bool shouldDie=false;
+    private float deathTimer = 0;
+    public float timeBeforeDestroy=1.0f;
     private enum EnemyState
     {
         walking,falling,dead
@@ -26,6 +29,28 @@ public class EnemyAI : MonoBehaviour
     void Update()
     {
         UpdateEnemyPosition();
+    }
+    public void Crush()
+    {
+        state = EnemyState.dead;
+        GetComponent<Animator>().SetBool("isCrushed", true);
+        GetComponent<Collider2D>().enabled = false;
+        shouldDie = false;
+    }
+    void CheckCrushed()
+    {
+        if (shouldDie)
+        {
+            if (deathTimer<= timeBeforeDestroy)
+            {
+                deathTimer += Time.deltaTime;
+            }
+            else
+            {
+                shouldDie = false;
+                Destroy(this.gameObject);
+            }
+        }
     }
     void UpdateEnemyPosition()
     {

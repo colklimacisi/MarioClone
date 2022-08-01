@@ -6,16 +6,18 @@ public class Player : MonoBehaviour
 {
     public float jumpVelocity;
     public LayerMask wallMask;
+    public float bounceVelocity;
     public float gravity;
     public LayerMask floorMask;
     public Vector2 velocity;
     private bool walk, walkLeft, walkRight, jump;
     public enum PlayerState
     {
-        jumping,idle,walking
+        jumping,idle,walking,bouncing
     }
     private PlayerState playerState = PlayerState.idle;
     private bool grounded = false;
+    private bool bounce = false;
     // Start is called before the first frame update
     void Start()
     {
@@ -54,6 +56,20 @@ public class Player : MonoBehaviour
         {
             playerState = PlayerState.jumping;
             velocity = new Vector2(velocity.x, jumpVelocity);
+
+        }
+        if (bounce && playerState != PlayerState.bouncing)
+        {
+            playerState = PlayerState.bouncing;
+            velocity = new Vector2(velocity.x, bounceVelocity);
+
+        }
+        if (playerState == PlayerState.bouncing)
+        {
+            pos.y += velocity.y*Time.deltaTime;
+            velocity.y -= gravity * Time.deltaTime;
+
+            velocity = new Vector2(velocity.x, bounceVelocity);
 
         }
         if (playerState == PlayerState.jumping)
@@ -95,6 +111,11 @@ public class Player : MonoBehaviour
             else if(floorRight) 
             {
                 hitRay = floorRight;
+            }
+            if (hitRay.collider.tag=="Enemy")
+            {
+                bounce = true;
+                hitRay.collider.GetComponent<EnemyAI>().Crush();
             }
             playerState = PlayerState.idle;
             grounded = true;
@@ -187,6 +208,7 @@ public class Player : MonoBehaviour
         velocity.y = 0;
 
         playerState = PlayerState.jumping;
+        bounce = false;
         grounded = false;
     }
 }
