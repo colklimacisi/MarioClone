@@ -29,6 +29,7 @@ public class EnemyAI : MonoBehaviour
     void Update()
     {
         UpdateEnemyPosition();
+        CheckCrushed();
     }
     public void Crush()
     {
@@ -68,6 +69,7 @@ public class EnemyAI : MonoBehaviour
                 if (isWalkingLeft)
                 {
                     pos.x -= velocity.x * Time.deltaTime;
+                    scale.x = -1;
                 }
                 else
                 {

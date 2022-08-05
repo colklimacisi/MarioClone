@@ -117,6 +117,7 @@ public class Player : MonoBehaviour
                 bounce = true;
                 hitRay.collider.GetComponent<EnemyAI>().Crush();
             }
+            
             playerState = PlayerState.idle;
             grounded = true;
             velocity.y = 0;
