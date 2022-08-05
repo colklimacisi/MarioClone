@@ -19,6 +19,7 @@ public class EnemyAI : MonoBehaviour
     void Start()
     {
         enabled = false;
+        fall();
     }
 
     // Update is called once per frame
@@ -42,6 +43,7 @@ public class EnemyAI : MonoBehaviour
                 if (isWalkingLeft)
                 {
                     pos.x -= velocity.x * Time.deltaTime;
+                    scale.x = -1;
                 }
                 else
                 {
@@ -96,7 +98,7 @@ public class EnemyAI : MonoBehaviour
 
         return pos;
     }
-    private void OnBecameVisible()
+    void OnBecameVisible()
     {
         enabled = true;
     }
