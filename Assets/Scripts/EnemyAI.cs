@@ -68,6 +68,7 @@ public class EnemyAI : MonoBehaviour
                 if (isWalkingLeft)
                 {
                     pos.x -= velocity.x * Time.deltaTime;
+                    scale.x = -1;
                 }
                 else
                 {
