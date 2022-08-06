@@ -51,13 +51,16 @@ public class EnemyAI : MonoBehaviour
                     scale.x = 1;
                 }
             }
-            if (velocity.y<=0)
-            
+            if (velocity.y <= 0)
+            {
                 pos = CheckGround(pos);
-            CheckWalls(pos, scale.x);
+                CheckWalls(pos, scale.x);
 
-            
-            
+            }
+
+
+
+
             transform.localPosition = pos;
             transform.localScale = scale;
 
