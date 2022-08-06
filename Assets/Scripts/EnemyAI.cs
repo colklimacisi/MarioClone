@@ -52,11 +52,11 @@ public class EnemyAI : MonoBehaviour
                 }
             }
             if (velocity.y<=0)
-            {
+            
                 pos = CheckGround(pos);
-                CheckWalls(pos, scale.x);
+            CheckWalls(pos, scale.x);
 
-            }
+            
             
             transform.localPosition = pos;
             transform.localScale = scale;
@@ -133,13 +133,6 @@ public class EnemyAI : MonoBehaviour
 
 
 
-        }
-        else
-        {
-            if (state!= EnemyState.falling)
-            {
-                fall();
-            }
         }
     }
     private void OnBecameVisible()
