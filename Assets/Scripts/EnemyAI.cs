@@ -43,6 +43,7 @@ public class EnemyAI : MonoBehaviour
                 if (isWalkingLeft)
                 {
                     pos.x -= velocity.x * Time.deltaTime;
+                    scale.x = -1;
                 }
                 else
                 {
@@ -53,6 +54,7 @@ public class EnemyAI : MonoBehaviour
             if (velocity.y<=0)
             {
                 pos = CheckGround(pos);
+                
             }
             CheckWalls(pos, scale.x);
             transform.localPosition = pos;
@@ -107,9 +109,9 @@ public class EnemyAI : MonoBehaviour
         Vector2 originTop = new Vector2(pos.x + direction*0.4f , pos.y - 0.5f -0.2f);
         Vector2 originMiddle = new Vector2(pos.x + direction * 0.4f, pos.y);
         Vector2 originBottom = new Vector2(pos.x + direction * 0.4f, pos.y - 0.5f+0.2f);
-        RaycastHit2D wallTop = Physics2D.Raycast(originTop, new Vector2(direction,0), velocity.y * Time.deltaTime, wallMask);
-        RaycastHit2D wallMiddle = Physics2D.Raycast(originMiddle, new Vector2(direction, 0), velocity.y * Time.deltaTime, wallMask);
-        RaycastHit2D wallBottom = Physics2D.Raycast(originBottom, new Vector2(direction, 0), velocity.y * Time.deltaTime, wallMask);
+        RaycastHit2D wallTop = Physics2D.Raycast(originTop, new Vector2(direction,0), velocity.x * Time.deltaTime, wallMask);
+        RaycastHit2D wallMiddle = Physics2D.Raycast(originMiddle, new Vector2(direction, 0), velocity.x* Time.deltaTime, wallMask);
+        RaycastHit2D wallBottom = Physics2D.Raycast(originBottom, new Vector2(direction, 0), velocity.x * Time.deltaTime, wallMask);
         if (wallTop.collider!=null || wallMiddle.collider != null || wallBottom.collider != null )
         {
             RaycastHit2D hitRay = wallTop;
@@ -126,10 +128,9 @@ public class EnemyAI : MonoBehaviour
                 hitRay = wallBottom;
 
             }
-            pos.y = hitRay.collider.bounds.center.y + hitRay.collider.bounds.size.y / 2 + 0.5f;
-            grounded = true;
-            velocity.y = 0;
-            state = EnemyState.walking;
+            isWalkingLeft = !isWalkingLeft;
+
+
 
         }
         else
