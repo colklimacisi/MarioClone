@@ -54,6 +54,7 @@ public class EnemyAI : MonoBehaviour
             {
                 pos = CheckGround(pos);
             }
+            CheckWalls(pos, scale.x);
             transform.localPosition = pos;
             transform.localScale = scale;
 
@@ -111,7 +112,32 @@ public class EnemyAI : MonoBehaviour
         RaycastHit2D wallBottom = Physics2D.Raycast(originBottom, new Vector2(direction, 0), velocity.y * Time.deltaTime, wallMask);
         if (wallTop.collider!=null || wallMiddle.collider != null || wallBottom.collider != null )
         {
+            RaycastHit2D hitRay = wallTop;
+            if (wallTop)
+            {
+                hitRay = wallTop;
+            }
+            else if (wallMiddle)
+            {
+                hitRay = wallMiddle;
+            }
+            else if (wallBottom)
+            {
+                hitRay = wallBottom;
 
+            }
+            pos.y = hitRay.collider.bounds.center.y + hitRay.collider.bounds.size.y / 2 + 0.5f;
+            grounded = true;
+            velocity.y = 0;
+            state = EnemyState.walking;
+
+        }
+        else
+        {
+            if (state!= EnemyState.falling)
+            {
+                fall();
+            }
         }
     }
     private void OnBecameVisible()
