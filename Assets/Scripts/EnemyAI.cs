@@ -35,7 +35,7 @@ public class EnemyAI : MonoBehaviour
         state = EnemyState.dead;
         GetComponent<Animator>().SetBool("isCrushed", true);
         GetComponent<Collider2D>().enabled = false;
-        shouldDie = false;
+        shouldDie = true;
     }
     void CheckCrushed()
     {

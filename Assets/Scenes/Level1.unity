@@ -1115,7 +1115,7 @@ MonoBehaviour:
   wallMask:
     serializedVersion: 2
     m_Bits: 1
-  bounceVelocity: 20
+  bounceVelocity: 10
   gravity: 65
   floorMask:
     serializedVersion: 2

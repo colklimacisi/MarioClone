@@ -69,7 +69,7 @@ public class Player : MonoBehaviour
             pos.y += velocity.y*Time.deltaTime;
             velocity.y -= gravity * Time.deltaTime;
 
-            velocity = new Vector2(velocity.x, bounceVelocity);
+            //velocity = new Vector2(velocity.x, bounceVelocity);
 
         }
         if (playerState == PlayerState.jumping)
@@ -114,8 +114,9 @@ public class Player : MonoBehaviour
             }
             if (hitRay.collider.tag=="Enemy")
             {
-                bounce = true;
                 hitRay.collider.GetComponent<EnemyAI>().Crush();
+                bounce = true;
+                
             }
             playerState = PlayerState.idle;
             grounded = true;
