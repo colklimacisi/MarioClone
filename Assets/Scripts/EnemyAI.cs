@@ -133,7 +133,10 @@ public class EnemyAI : MonoBehaviour
 
             }
             isWalkingLeft = !isWalkingLeft;
-
+            if (hitRay.collider.tag == "Player")
+            {
+                Application.LoadLevel("GameOver");
+            }
 
 
         }
