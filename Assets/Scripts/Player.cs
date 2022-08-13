@@ -69,7 +69,7 @@ public class Player : MonoBehaviour
             pos.y += velocity.y*Time.deltaTime;
             velocity.y -= gravity * Time.deltaTime;
 
-            velocity = new Vector2(velocity.x, bounceVelocity);
+            
 
         }
         if (playerState == PlayerState.jumping)
