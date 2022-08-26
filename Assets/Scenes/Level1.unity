@@ -1518,7 +1518,7 @@ GameObject:
   - component: {fileID: 2069989888}
   - component: {fileID: 2069989887}
   - component: {fileID: 2069989886}
-  m_Layer: 3
+  m_Layer: 0
   m_Name: Hole
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1547,7 +1547,7 @@ BoxCollider2D:
   m_Enabled: 1
   m_Density: 1
   m_Material: {fileID: 0}
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_UsedByEffector: 0
   m_UsedByComposite: 0
   m_Offset: {x: 0.83115387, y: 0}
