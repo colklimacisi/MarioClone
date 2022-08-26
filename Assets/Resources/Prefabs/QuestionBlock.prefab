@@ -142,3 +142,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c000b8d58d680664fab106196677bdd7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  bounceHeight: 0.5
+  bounceSpeed: 4
+  emptyBlockSprite: {fileID: 21300000, guid: d1c66c68cb70f4212b2b67f685846f4d, type: 3}
